@@ -142,7 +142,7 @@ module.exports = {
             type: "s-expression"
         };
         if (tokens[0] == "'") {
-            codeObject.type = "list"
+            codeObject.type = "list";
             tokens.shift();
         }
         //Removing first and last parenthesis
@@ -166,7 +166,7 @@ module.exports = {
                     codeObject.params.push({type: "String",value: tokens[i].substr(1, tokens[i].length - 2)});
                 }
                 else if (isNumeric(tokens[i])) {
-                    codeObject.params.push({type: "Number",value: tokens[i]});
+                    codeObject.params.push({type: "Number", value: parseFloat(tokens[i])});
                 }
                 else {
                     throw new Error("Syntax Error: Invalid Data '" + tokens[i] + "'");
@@ -179,7 +179,7 @@ module.exports = {
 
     },
     compileTree(tree) {
-
+        //TODO: To be codded...
     },
     compile(code) {
         const TOKENS = this.tokenize(code);
@@ -190,14 +190,3 @@ module.exports = {
     }
 
 };
-
-
-function printValues(obj) {
-    for (var key in obj) {
-        if (typeof obj[key] === "object") {
-            printValues(obj[key]);
-        } else {
-            console.log(obj[key]);
-        }
-    }
-}
