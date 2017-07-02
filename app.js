@@ -15,6 +15,6 @@ try {
         currentLine++;
     }
     console.timeEnd("Compile Time");
-}catch (e){
+} catch (e){
      console.log(e.message+" on Line "+currentLine);
 }
