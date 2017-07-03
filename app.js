@@ -10,7 +10,8 @@ const SOURCE_CODE = "(* (+ 1 2.2) 3)\n" +
     "(+ (* 2 4) 10)\n" +
     "'(1 2 3 4)\n" +
     "(cons 5 3)\n" +
-    "(cons (cons 2 3) 3)";
+    "(cons (cons 2 3) 3)\n" +
+    "(list 2 3 1 6 4)";
 const SPLITTED_CODE = SOURCE_CODE.split("\n");
 let currentLine = 1;
 try {
