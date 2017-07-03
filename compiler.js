@@ -49,7 +49,17 @@ let compiler_functions = {
 function isNumeric(n) {
     return !isNaN(parseFloat(n)) && isFinite(n);
 }
-
+function proccessBackslash(command) {
+    switch (command) {
+        case '\\':
+            return '\\';
+        case 'n':
+            return '\n';
+        case 't':
+            return '\t';
+    }
+    return command;
+}
 module.exports = {
     tokenize(code) {
         let tokens =[];
@@ -80,19 +90,7 @@ module.exports = {
                             continue;
                         }
                         if (openCommand) {
-                            switch(code[i]) {
-                                case '\\':
-                                    temp += '\\';
-                                    break;
-                                case 'n':
-                                    temp += '\n';
-                                    break;
-                                case 't':
-                                    temp += '\t';
-                                    break;
-                                default:
-                                    temp+=code[i];
-                            }
+                            temp += proccessBackslash(code[i]);
                             openCommand = false;
                             ++i;
                             continue;
