@@ -36,13 +36,15 @@ let compiler_functions = {
             throw new Error("Syntax Error: Invalid Arguments for print.")
         }
         let outputstring = "";
-        for (let i = 0; i < arguments.length; i++)
+        for (let i = 0; i < arguments.length; i++) {
             if (i > 1)
                 outputstring += " ";
             outputstring += arguments[i];
+        }
         console.log(outputstring);
     }
 };
+
 
 function isNumeric(n) {
     return !isNaN(parseFloat(n)) && isFinite(n);
@@ -143,6 +145,7 @@ module.exports = {
         };
         if (tokens[0] == "'") {
             codeObject.type = "list";
+            codeObject.nodes = [];
             tokens.shift();
         }
         //Removing first and last parenthesis
@@ -158,10 +161,22 @@ module.exports = {
                 i = closingpr;
             }
             else if (tokens[i] in compiler_functions) {
+                if (tokens[i] == 'cons') {
+                    codeObject.type = 'list';
+                }
                 codeObject.func = tokens[i];
                 codeObject.params = [];
             }
             else {
+                if ('nodes' in codeObject) {
+                    if (tokens[i][0] == '"') {
+                        codeObject.nodes.push({type: "String", value: tokens[i].substr(1, tokens[i].length - 2)});
+                    }
+                    else if (isNumeric(tokens[i])) {
+                        codeObject.nodes.push({type: "Number", value: parseFloat(tokens[i])});
+                    }
+                    continue;
+                }
                 if (tokens[i][0] == '"') {
                     codeObject.params.push({type: "String",value: tokens[i].substr(1, tokens[i].length - 2)});
                 }
