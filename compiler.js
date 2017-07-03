@@ -137,44 +137,55 @@ module.exports = {
                 if (pLoader == 0)
                     return i;
             }
-            throw new Error("Syntax Error: Invalid Parenthesis")
+            throw new Error("Syntax Error: Invalid parenthesis")
         }
         let numOfP = 0;
-        let codeObject = {
-            type: "s-expression"
-        };
+        let codeObject = {};
+
         if (tokens[0] == "'") {
             codeObject.type = "list";
             codeObject.nodes = [];
             tokens.shift();
+        } else {
+            if (tokens[1] in compiler_functions) {
+                codeObject.type = "s-expression";
+                codeObject.params = [];
+            }
+            else if (tokens[1] == 'list' || tokens[1] == 'cons') {
+                codeObject.type = "list";
+                codeObject.nodes = [];
+            }
+            else
+                throw new Error("Syntax Error: Undefined function (" + tokens[1] + ")");
         }
-        //Removing first and last parenthesis
+
+        //Removing first and last paranthesis
         tokens.shift();
         tokens.pop();
 
-        for (let i = 0; i < tokens.length; i++) {
+
+        for (let i = 1; i < tokens.length; i++) {
             if (tokens[i] == '(') {
                 numOfP++;
-                codeObject.params = [];
                 const closingpr = findClosingParanthesis(i);
-                codeObject.params.push(this.parser(tokens.slice(1, closingpr+1)));
+                if (codeObject.type == "list") {
+                    codeObject.nodes.push(this.parser(tokens.slice(1, closingpr + 1)));
+                }
+                else {
+                    codeObject.params.push(this.parser(tokens.slice(1, closingpr + 1)));
+                }
                 i = closingpr;
             }
-            else if (tokens[i] in compiler_functions) {
-                if (tokens[i] == 'cons') {
-                    codeObject.type = 'list';
-                }
-                codeObject.func = tokens[i];
-                codeObject.params = [];
-            }
             else {
-                if ('nodes' in codeObject) {
+                if (codeObject.type == 'list') {
                     if (tokens[i][0] == '"') {
                         codeObject.nodes.push({type: "String", value: tokens[i].substr(1, tokens[i].length - 2)});
                     }
                     else if (isNumeric(tokens[i])) {
                         codeObject.nodes.push({type: "Number", value: parseFloat(tokens[i])});
                     }
+                    else
+                        throw new Error("Syntax Error: Invalid Data '" + tokens[i] + "'");
                     continue;
                 }
                 if (tokens[i][0] == '"') {
