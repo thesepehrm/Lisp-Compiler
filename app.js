@@ -5,7 +5,12 @@
 
 let compiler = require("./compiler.js");
 
-const SOURCE_CODE = "(* (+ 1 2.2) 3)\n(print \"Hello World\")\n(+ (* 2 4) 10)";
+const SOURCE_CODE = "(* (+ 1 2.2) 3)\n" +
+    "(print \"Hello World\")\n" +
+    "(+ (* 2 4) 10)\n" +
+    "'(1 2 3 4)\n" +
+    "(cons 5 3)\n" +
+    "(cons (cons 2 3) 3)";
 const SPLITTED_CODE = SOURCE_CODE.split("\n");
 let currentLine = 1;
 try {
