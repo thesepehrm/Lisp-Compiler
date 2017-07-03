@@ -209,7 +209,7 @@ module.exports = {
     },
     compile(code) {
         const TOKENS = this.tokenize(code);
-        console.log(TOKENS);
+        //console.log(TOKENS);
         const AST = this.parser(TOKENS);
         console.log(JSON.stringify(AST,null,2));
         this.compileTree(AST);
