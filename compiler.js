@@ -3,13 +3,12 @@
  */
 "use strict";
 
-
 //
 // ─── EXPORTS ────────────────────────────────────────────────────────────────────
 //
 module.exports = {
-    tokenize,parse,compileTree,compile
-}
+    tokenize, parser, compileTree, compile
+};
 
 //
 // ─── TOKENIZER  ────────────────────────────────────────────────────────────────────
@@ -23,7 +22,6 @@ function tokenize(code) {
         if (chr == '(' || chr == ')')
             tokens.push(chr);
     }
-
 
     let tokens = [];
     let temp = "";
